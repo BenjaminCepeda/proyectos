@@ -1,0 +1,32 @@
+
+CREATE ROLE "stAdmins" SUPERUSER NOINHERIT CREATEDB CREATEROLE;
+CREATE ROLE "stAdmin" LOGIN ENCRYPTED PASSWORD 'stAdmin' SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;
+GRANT "stAdmins" TO "stAdmin";
+
+CREATE ROLE "stUsers" NOSUPERUSER NOINHERIT NOCREATEDB NOCREATEROLE;
+CREATE ROLE "stTraveler" LOGIN ENCRYPTED PASSWORD 'stTraveler' NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+GRANT "stUsers" TO "stTraveler";
+
+-- Revocar privilegios de conexion a todos los usuarios 
+REVOKE CONNECT ON DATABASE "safeTrip" FROM PUBLIC;
+
+
+-- Conceder permisos de conexion 
+GRANT CONNECT ON DATABASE "safeTrip" TO "stAdmins";
+
+-- Conceder permisos de conexion 
+GRANT CONNECT ON DATABASE "safeTrip" TO "stUsers";
+
+CREATE SCHEMA configuration AUTHORIZATION "stAdmins";
+GRANT ALL ON SCHEMA configuration TO "stAdmins";
+
+CREATE SCHEMA "tripInfo" AUTHORIZATION "stUsers";
+GRANT USAGE ON SCHEMA "tripInfo" TO  "stUsers";
+-- Conceder a admins privilegios al esquema tripInfo
+--GRANT ALL ON SCHEMA "tripInfo" TO admins;
+
+
+--Permisos sobre tablas
+GRANT ALL ON ALL TABLES IN SCHEMA configuration TO "stAdmin";
+
+GRANT ALL ON ALL TABLES IN SCHEMA "trpInfo" TO "stTraveler";
