@@ -29,4 +29,4 @@ GRANT USAGE ON SCHEMA "tripInfo" TO  "stUsers";
 --Permisos sobre tablas
 GRANT ALL ON ALL TABLES IN SCHEMA configuration TO "stAdmin";
 
-GRANT ALL ON ALL TABLES IN SCHEMA "trpInfo" TO "stTraveler";
+GRANT ALL ON ALL TABLES IN SCHEMA "tripInfo" TO "stTraveler";
