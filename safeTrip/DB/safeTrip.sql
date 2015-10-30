@@ -1,4 +1,4 @@
---
+﻿--
 -- PostgreSQL database dump
 --
 SET lock_timeout = 0;
@@ -230,7 +230,7 @@ ALTER SEQUENCE "socialNetwork_id_seq" OWNED BY "socialNetwork".id;
 
 CREATE TABLE status (
     id serial NOT NULL,
-    "tableId" smallint,
+    "relatedTableId" smallint,
     description character varying(50),
     "order" smallint,
     enabled boolean
@@ -268,15 +268,15 @@ ALTER SEQUENCE status_id_seq OWNED BY status.id;
 -- Name: table; Type: TABLE; Schema: configuration; Owner: stAdmins; Tablespace: 
 --
 
-CREATE TABLE "table" (
+CREATE TABLE "relatedTable" (
     id smallserial NOT NULL,
-    "tableName" character varying(50),
+    "relatedTableName" character varying(50),
     enabled boolean
 
 );
 
 
-ALTER TABLE "table" OWNER TO "stAdmins";
+ALTER TABLE "relatedTable" OWNER TO "stAdmins";
 
 --
 -- TOC entry 199 (class 1259 OID 24585)
@@ -291,7 +291,7 @@ ALTER TABLE "table" OWNER TO "stAdmins";
 --    CACHE 1;
 
 
-ALTER TABLE table_id_seq OWNER TO "stAdmins";
+ALTER TABLE "relatedTable_id_seq" OWNER TO "stAdmins";
 
 --
 -- TOC entry 2245 (class 0 OID 0)
@@ -299,7 +299,7 @@ ALTER TABLE table_id_seq OWNER TO "stAdmins";
 -- Name: table_id_seq; Type: SEQUENCE OWNED BY; Schema: configuration; Owner: stAdmins
 --
 
-ALTER SEQUENCE table_id_seq OWNED BY "table".id;
+ALTER SEQUENCE "relatedTable_id_seq" OWNED BY "relatedTable".id;
 
 
 --
@@ -624,7 +624,7 @@ ALTER TABLE ONLY "socialNetwork" ALTER COLUMN id SET DEFAULT nextval('"socialNet
 -- Name: id; Type: DEFAULT; Schema: configuration; Owner: stAdmins
 --
 
-ALTER TABLE ONLY status ALTER COLUMN id SET DEFAULT nextval('status_id_seq'::regclass);
+ALTER TABLE ONLY "status" ALTER COLUMN id SET DEFAULT nextval('status_id_seq'::regclass);
 
 
 --
@@ -632,7 +632,7 @@ ALTER TABLE ONLY status ALTER COLUMN id SET DEFAULT nextval('status_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: configuration; Owner: stAdmins
 --
 
-ALTER TABLE ONLY "table" ALTER COLUMN id SET DEFAULT nextval('table_id_seq'::regclass);
+ALTER TABLE ONLY "relatedTable" ALTER COLUMN id SET DEFAULT nextval('"relatedTable_id_seq"'::regclass);
 
 
 --
@@ -829,7 +829,7 @@ SELECT pg_catalog.setval('status_id_seq', 1, true);
 -- Name: table_id_seq; Type: SEQUENCE SET; Schema: configuration; Owner: stAdmins
 --
 
-SELECT pg_catalog.setval('table_id_seq', 1, false);
+SELECT pg_catalog.setval('"relatedTable_id_seq"', 1, false);
 
 
 --
@@ -1006,7 +1006,7 @@ ALTER TABLE ONLY "socialNetwork"
 -- Name: pk_status; Type: CONSTRAINT; Schema: configuration; Owner: stAdmins; Tablespace: 
 --
 
-ALTER TABLE ONLY status
+ALTER TABLE ONLY "status"
     ADD CONSTRAINT pk_status PRIMARY KEY (id);
 
 
@@ -1015,7 +1015,7 @@ ALTER TABLE ONLY status
 -- Name: pk_table; Type: CONSTRAINT; Schema: configuration; Owner: stAdmins; Tablespace: 
 --
 
-ALTER TABLE ONLY "table"
+ALTER TABLE ONLY "relatedTable"
     ADD CONSTRAINT pk_table PRIMARY KEY (id);
 
 
@@ -1103,7 +1103,7 @@ SET search_path = configuration, pg_catalog;
 --
 
 ALTER TABLE ONLY status
-    ADD CONSTRAINT fk_status_table FOREIGN KEY ("tableId") REFERENCES "table"(id);
+    ADD CONSTRAINT "fk_status_relatedTable" FOREIGN KEY ("relatedTableId") REFERENCES "relatedTable"(id);
 
 
 SET search_path = "travelerInfo", pg_catalog;
